@@ -1,0 +1,136 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting</title>
+    <link rel="stylesheet" href="../../assets/index.css">
+    <script src="../../assets/alphine.js" defer></script>
+</head>
+
+<body class="py-5 px-3" x-data="form">
+    <form class="bg-white rounded px-8 pt-6 pb-8 mb-4" @submit.prevent="submit_setting()">
+        <Strong class="border-b-2">Hotel detail</Strong>
+        <div class="px-3 mt-5">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold" for="username">
+                    Hotel Name
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="username" type="text" x-model="form.name" required>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold">
+                    ID CM
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="passwordtextpassword" x-model="form.id_cm" required>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold">
+                    Auth CM
+                </label>
+                <input
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="password" type="text" x-model="form.auth_cm" required>
+            </div>
+        </div>
+        <Strong class="border-b-2">Database detail</Strong>
+        <div class="px-3 mt-5">
+            <div class="mb-4">
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold">
+                        Host
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="password" type="text" x-model="form.host" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold">
+                        Port
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="password" type="text" x-model="form.port" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold">
+                        Database name
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="password" type="text" x-model="form.database" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold">
+                        Username
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="password" type="text" x-model="form.username" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold">
+                        Password
+                    </label>
+                    <input
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        id="password" type="text" x-model="form.password">
+                </div>
+            </div>
+            <div class="flex items-center justify-between w-full">
+                <button
+                    class="bg-blue-500 hover:bg-blue-700 text-white w-full font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    type="submit">
+                    Save settings
+                </button>
+
+            </div>
+    </form>
+
+
+    <script>
+        const {ipcRenderer} = require('electron')
+        const Store = require('electron-store');
+        const store = new Store();
+        var setting =store.get('setting') 
+        if(setting!=null){
+            setting= JSON.parse(setting)
+            setting={
+                name: setting.name,
+                id_cm: setting.id_cm,
+                auth_cm: setting.auth_cm,
+                host: setting.host,
+                port: setting.port,
+                username: setting.username,
+                password: setting.password,
+                database: setting.database
+            }
+        }else{
+             setting={
+                name:'' ,
+                id_cm: '',
+                auth_cm: '',
+                host: '',
+                port: '',
+                username: '',
+                password: '',
+                database: '',
+            }
+        }
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('form', () => ({
+                form: setting,
+                submit_setting() {
+                    ipcRenderer.send("save:settings", JSON.stringify(this.form))
+                },
+            }))
+        })
+    </script>
+</body>
+
+</html>

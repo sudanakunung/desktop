@@ -1,0 +1,23 @@
+{
+  "name": "desktop_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./src/app/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^22.0.0",
+    "electron-hot-reload": "^0.1.4",
+    "electron-store": "^8.1.0",
+    "mysql2": "^2.3.3",
+    "node": "^19.3.0",
+    "sequelize": "^6.28.0",
+    "socket.io-client": "^4.5.4",
+    "sqlite3": "^5.1.4"
+  }
+}
